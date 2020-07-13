@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/.conan)
 
 find_package(GTest REQUIRED)
 
-add_executable(template main.cpp)
+add_executable(parser parser.cpp)
 
-target_link_libraries(template PRIVATE GTest::GTest)
+target_link_libraries(parser PRIVATE GTest::GTest)
 

@@ -2,11 +2,10 @@
 #include <algorithm> 
 #include <cctype>
 #include <fstream>
-#include <gmock/gmock.h>
 #include <iostream>
 #include <locale>
+#include <string>
 
-using namespace testing;
 using namespace std;
 
 //TO-DO add logging
@@ -102,24 +101,24 @@ std::string helloWorld (){
 
 //TO-DO Add actual files for testing? Need mock or not...
 
-TEST( BlobParserBasics, test1 )
-{
-	//ifstream infile;
-	//infile.open("example.txt");
-	string s = "";
-
-	//while (!infile.eof()) // To get you all the lines.
-	//{
-	//	string curr;
-	//	getline(infile, curr); // Saves the line in STRING.
-	//	cout << "curr is " + curr << endl; // Prints our STRING.
-	//	s += curr;
-	//	cout << "s is" + s << endl;
-	//}
-    EXPECT_THAT(helloWorld(), Eq(s));
-}
-
-TEST(BlobParserBasics, test2)
-{
-	EXPECT_THAT(1+1, 2);
-}
+//TEST( BlobParserBasics, test1 )
+//{
+//	//ifstream infile;
+//	//infile.open("example.txt");
+//	string s = "";
+//
+//	//while (!infile.eof()) // To get you all the lines.
+//	//{
+//	//	string curr;
+//	//	getline(infile, curr); // Saves the line in STRING.
+//	//	cout << "curr is " + curr << endl; // Prints our STRING.
+//	//	s += curr;
+//	//	cout << "s is" + s << endl;
+//	//}
+//    EXPECT_THAT(helloWorld(), Eq(s));
+//}
+//
+//TEST(BlobParserBasics, test2)
+//{
+//	EXPECT_THAT(1+1, 2);
+//}

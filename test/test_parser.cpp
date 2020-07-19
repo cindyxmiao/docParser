@@ -1,10 +1,11 @@
 // Test framework
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <string>
 
-#include "parser.cpp"
+#include "parser.h"
 
-
+using namespace std;
 using namespace testing;
 
 TEST(BlobParserBasics, test1)
@@ -12,6 +13,7 @@ TEST(BlobParserBasics, test1)
 	//ifstream infile;
 	//infile.open("example.txt");
 	string s = "";
+	Parser p;
 
 	//while (!infile.eof()) // To get you all the lines.
 	//{
@@ -21,7 +23,8 @@ TEST(BlobParserBasics, test1)
 	//	s += curr;
 	//	cout << "s is" + s << endl;
 	//}
-	EXPECT_THAT(helloWorld(), Eq(s));
+	string answer = p.helloWorld();
+	EXPECT_THAT(answer, Eq(s));
 }
 
 TEST(BlobParserBasics, test2)

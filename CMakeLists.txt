@@ -9,11 +9,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/.conan)
 
 find_package(GTest REQUIRED)
 
-#add_executable(parser parser.cpp)
 
-#target_link_libraries(parser PRIVATE GTest::GTest)
+add_library(parser STATIC
+  src/parser.cpp
+  src/parser.h
+  src/element.h
+  src/element.cpp
+)
 
 include_directories(src)
 
-add_subdirectory(src)
 add_subdirectory(test)

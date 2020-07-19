@@ -1,4 +1,3 @@
-
 #include <algorithm> 
 #include <cctype>
 #include <fstream>
@@ -6,16 +5,17 @@
 #include <locale>
 #include <string>
 
+#include "parser.h"
 using namespace std;
 
 //TO-DO add logging
-//TO-DO reorganize structure and get tests in separate file
 //TO-DO add clang somehow
+//TO-DO put parser into a class
 
 /**
  * Adds paragrah tags to a string and writes to output file
  */
-void writeParagraph(ofstream& outfile, string paragraph) {
+void Parser::writeParagraph(ofstream& outfile, string paragraph) {
 	cout << "This is a paragraph" << endl;
 	outfile << "<p>" << paragraph << "</p>" << endl;
 }
@@ -23,7 +23,7 @@ void writeParagraph(ofstream& outfile, string paragraph) {
 /**
  * Adds header tags to a string and writes to output file 
  */
-void writeHeader(ofstream& outfile, string header) {
+void Parser::writeHeader(ofstream& outfile, string header) {
 	cout << "This is a header" << endl;
 	outfile << "<h3>" << header << "</h3>" << endl;
 }
@@ -31,7 +31,7 @@ void writeHeader(ofstream& outfile, string header) {
 /**
  * Trims leading and trailing whitespace if present
  */
-static inline void trim(std::string& s) { // from https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+void Parser::trim(string& s) { // from https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
 		return !std::isspace(ch);
 	}).base(), s.end());
@@ -42,13 +42,13 @@ static inline void trim(std::string& s) { // from https://stackoverflow.com/ques
  * @param   file_name  the name of the file as specified by the user. Can be with or without file extension
  * @return			   true if the file exists and is a text file, and false otherwise
  */
-void isVailidFile(string file_name) {
+void Parser::isVailidFile(string file_name) {
 	
 }
 
 
 
-std::string helloWorld (){
+string Parser::helloWorld (){
 
 	/*input file*/
 	ifstream infile;
@@ -94,31 +94,3 @@ std::string helloWorld (){
 	outfile.close();
 	return s + t;
 }
-/*int main(int argc, const char * argv []){
-	std::cout << helloWorld() <<std::endl;
-	return 0;
-}*/
-
-//TO-DO Add actual files for testing? Need mock or not...
-
-//TEST( BlobParserBasics, test1 )
-//{
-//	//ifstream infile;
-//	//infile.open("example.txt");
-//	string s = "";
-//
-//	//while (!infile.eof()) // To get you all the lines.
-//	//{
-//	//	string curr;
-//	//	getline(infile, curr); // Saves the line in STRING.
-//	//	cout << "curr is " + curr << endl; // Prints our STRING.
-//	//	s += curr;
-//	//	cout << "s is" + s << endl;
-//	//}
-//    EXPECT_THAT(helloWorld(), Eq(s));
-//}
-//
-//TEST(BlobParserBasics, test2)
-//{
-//	EXPECT_THAT(1+1, 2);
-//}

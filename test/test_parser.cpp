@@ -23,8 +23,7 @@ TEST(BlobParserBasics, test1)
 	//	s += curr;
 	//	cout << "s is" + s << endl;
 	//}
-	string answer = p.helloWorld();
-	EXPECT_THAT(answer, Eq(s));
+	p.convertFile();
 }
 
 TEST(BlobParserBasics, test2)

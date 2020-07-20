@@ -6,26 +6,23 @@
 #include <string>
 
 #include "parser.h"
+
 using namespace std;
 
+//TO-DI add tests
 //TO-DO add logging
 //TO-DO add clang somehow
-//TO-DO put parser into a class
 
-/**
- * Adds paragrah tags to a string and writes to output file
- */
-void Parser::writeParagraph(ofstream& outfile, string paragraph) {
-	cout << "This is a paragraph" << endl;
-	outfile << "<p>" << paragraph << "</p>" << endl;
-}
-
-/**
- * Adds header tags to a string and writes to output file 
- */
-void Parser::writeHeader(ofstream& outfile, string header) {
-	cout << "This is a header" << endl;
-	outfile << "<h3>" << header << "</h3>" << endl;
+void Parser::writeToFile(ofstream& outfile) {
+	for (auto it = begin(m_document_elements); it != end(m_document_elements); ++it) {
+		if (it->getType() == HEADER) {
+			outfile << "<h3>" << it->getText()<< "</h3>" << endl;
+		}
+		else if (it->getType() == PARAGRAPH) {
+			outfile << "<p>" << it->getText() << "</p>" << endl;
+		}
+		//TO-DO add bullet support
+	}
 }
 
 /**
@@ -42,35 +39,23 @@ void Parser::trim(string& s) { // from https://stackoverflow.com/questions/21682
  * @param   file_name  the name of the file as specified by the user. Can be with or without file extension
  * @return			   true if the file exists and is a text file, and false otherwise
  */
-void Parser::isVailidFile(string file_name) {
-	
-}
-
-
-
-string Parser::helloWorld (){
-
-	/*input file*/
-	ifstream infile;
-	string file_name;
-	string line;
-
+bool Parser::getFile(ifstream& infile, string& file_name) {
 
 	cout << "Enter the name of the text file to be converted (do not include .txt):";
 	cin >> file_name;
-	//TO-DO: can be entered with or without txt, throw exception if file is not of the correct type
 
 	infile.open(file_name + ".txt");
 	if (!infile.is_open()) {
 		cout << "Error opening file...terminating..." << endl;
-		//TO-DO: print error message if file name is invalid, or not in directory?
+		return false;
 	}
-	cout << file_name + " is being parsed... "<< endl;
+	cout << file_name + " is being parsed... " << endl;
+	return true;
+}
 
-	/*output file*/
-	ofstream outfile;
-	outfile.open(file_name + ".html");
+void Parser::readFile(ifstream& infile) {
 
+	string line;
 	while (infile.good())
 	{
 		getline(infile, line);
@@ -78,19 +63,36 @@ string Parser::helloWorld (){
 		cout << "reading line: " + line << endl;
 		if (line.empty()) {
 			cout << "Empty line" << endl;
-			//don't do anything
 		}
-		else if (line.length() < 100 || !ispunct(line.at(line.length() - 1)) ) {
-			writeHeader(outfile, line);
+		else if (line.at(0) == '-') {
+			m_document_elements.push_back(Element(BULLET, line));
 		}
-		else{
-			writeParagraph(outfile, line);
+		else if (line.length() < 100 || !ispunct(line.at(line.length() - 1))) {
+			m_document_elements.push_back(Element(HEADER, line));
+		}
+		else {
+			m_document_elements.push_back(Element(PARAGRAPH, line));
 		}
 	}
-	
-	string s = "Writing this to a file.";
-	string t = "Hello there!";
+}
 
+void Parser::convertFile(){
+
+	/*input file*/
+	ifstream infile;
+	string file_name;
+
+	if (!getFile(infile, file_name)) {
+		//return false?
+	}
+
+	readFile(infile);
+	infile.close();
+
+	/*output file*/
+	ofstream outfile;
+	outfile.open(file_name + ".html");
+	
+	writeToFile(outfile);
 	outfile.close();
-	return s + t;
 }

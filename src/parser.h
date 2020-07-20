@@ -8,12 +8,12 @@
 class Parser
 {
 private:
-    std::vector<Element> document_elements;
+    std::vector<Element> m_document_elements;
 
 public:
-    void writeParagraph(std::ofstream& outfile, std::string paragraph);
-    void writeHeader(std::ofstream& outfile, std::string header);
+    void writeToFile(std::ofstream& outfile);
     static void trim(std::string& s);
-    std::string helloWorld(); 
-    void isVailidFile(std::string file_name);
+    void convertFile();
+    bool getFile(std::ifstream& infile, std::string& file_name);
+    void readFile(std::ifstream& infile);
 };

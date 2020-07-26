@@ -18,4 +18,4 @@ public:
     std::string getText();
 
     Element(eTYPE type, std::string text);
-};
+};

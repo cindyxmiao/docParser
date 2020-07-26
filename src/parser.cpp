@@ -9,29 +9,50 @@
 
 using namespace std;
 
-//TO-DI add tests
+//TO-DI add integration tests and parsing unit tests
 //TO-DO add logging
 //TO-DO add clang somehow
 
 void Parser::writeToFile(ofstream& outfile) {
-	for (auto it = begin(m_document_elements); it != end(m_document_elements); ++it) {
+	
+	auto it = begin(m_document_elements);
+	while (it != end(m_document_elements)) {
 		if (it->getType() == HEADER) {
 			outfile << "<h3>" << it->getText()<< "</h3>" << endl;
 		}
 		else if (it->getType() == PARAGRAPH) {
 			outfile << "<p>" << it->getText() << "</p>" << endl;
 		}
-		//TO-DO add bullet support
+		else if(it->getType() == BULLET){
+			writeBulletList(outfile, it);
+			continue;
+		}
+		it++;
 	}
 }
+void Parser::writeBulletList(ofstream& outfile, vector<Element>::iterator& it){
+	outfile << "<ul>" << endl;
+	do {
+		outfile << "<li>" << it->getText() << "</li>" << endl;
+		it++;
+	}
+	while (it != end(m_document_elements) && it->getType() == BULLET);
+	outfile << "</ul>" << endl;
+}
 
-/**
+/*
  * Trims leading and trailing whitespace if present
+ * from https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+ *
  */
-void Parser::trim(string& s) { // from https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+void Parser::trim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+        return !std::isspace(ch);
+    }));
+
 	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
-		return !std::isspace(ch);
-	}).base(), s.end());
+        return !std::isspace(ch);
+    }).base(), s.end());
 }
 
 /**
@@ -65,6 +86,8 @@ void Parser::readFile(ifstream& infile) {
 			cout << "Empty line" << endl;
 		}
 		else if (line.at(0) == '-') {
+			line.erase(line.begin());
+			trim(line);
 			m_document_elements.push_back(Element(BULLET, line));
 		}
 		else if (line.length() < 100 || !ispunct(line.at(line.length() - 1))) {
